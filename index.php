@@ -27,7 +27,7 @@
     <header>
         <div class="navbar-icon">
             <a href="index.php" style="text-decoration: none; display: flex; align-items: center;">
-                <img src="img/bg_favicon.png">
+            <img src="img/core/bg_favicon.png">
                 <h1>Ecosystem</h1>
             </a>
         </div>
@@ -39,67 +39,41 @@
         <?php
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
             echo "<div><h1>Welcome, " . $_SESSION["nametag"] . "!</h1><br>";
-            $richspanlogcount = mysqli_prepare($checkdb, "SELECT * FROM log WHERE email = ? AND product = 'RichSpan' LIMIT 25");
+            $richspanlogcount = mysqli_prepare($checkdb, "SELECT * FROM apps WHERE email = ? AND richspan = 1 LIMIT 25");
             mysqli_stmt_bind_param($richspanlogcount, "s", $_SESSION["email"]);
             mysqli_stmt_execute($richspanlogcount);
             $result = mysqli_stmt_get_result($richspanlogcount);
             $products = mysqli_fetch_assoc($result);
             if (mysqli_num_rows($result) > 0) {
-                echo "<p style='text-align:center;'><b>BG RichSpan</b> - A powerful word processor with a rich text editor.</p>";
-                echo "<div style='margin-top: 20px; text-align: center;'>";
-                echo "<br><br><center><h1>Log</h1></center><br>";
-                echo "<table width='100%' style='text-align: center;'>";
-                echo "<tr>";
-                echo "<th>Device Name</th>";
-                echo "<th>Activity</th>";
-                echo "<th>Log</th>";
-                echo "<th>Log Date</th>";
-                echo "</tr>";
-                while ($products = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $products["devicename"] . "</td>";
-                    echo "<td>" . $products["activity"] . "</td>";
-                    echo "<td>" . $products["log"] . "</td>";
-                    echo "<td>" . $products["logdate"] . "</td>";
-                    echo "</tr>";
-                    echo "<tr><td colspan='4'><hr></td></tr>";
-                }
-                echo "</table>";
+                echo "<div style='text-align: center; background-color: rgba(0, 0, 0, 0.37); padding: 20px;'>";
+                echo "<h1 style='color: #009688;'>BG RichSpan</h1>";
+                echo "<p style='font-size: 18px;'><b>BG RichSpan</b> is a powerful word processor with a rich text editor.</p>";
+                echo "</div>";
             } else {
-                echo "<p><b>BG RichSpan</b> - A powerful word processor with a rich text editor.</p>";
-                echo "<p><b>RichSpan has not been activated yet.</b></p>";
+                echo "<div style='text-align: center; background-color: rgba(0, 0, 0, 0.37); padding: 20px;'>";
+                echo "<h1 style='color: #FF5722;'>Activate BG RichSpan Now!</h1>";
+                echo "<p style='font-size: 18px;'><b>BG RichSpan</b> is a powerful word processor with a rich text editor.</p>";
+                echo "</div>";
             }
 
-            $spanrclogcount = mysqli_prepare($checkdb, "SELECT * FROM log WHERE email = ? AND product = 'SpanRC' LIMIT 25");
+            echo "<br>";
+
+            $spanrclogcount = mysqli_prepare($checkdb, "SELECT * FROM apps WHERE email = ? AND spanrc = 1 LIMIT 25");
             mysqli_stmt_bind_param($spanrclogcount, "s", $_SESSION["email"]);
             mysqli_stmt_execute($spanrclogcount);
             $result = mysqli_stmt_get_result($spanrclogcount);
             $products = mysqli_fetch_assoc($result);
 
             if (mysqli_num_rows($result) > 0) {
-                echo "<br><br><p><b>BG SpanRC</b> - A powerful table processor with formulas and functions.</p>";
-                echo "<div style='margin-top: 20px; text-align: center;'>";
-                echo "<br><br><center><h1>Log</h1></center><br>";
-                echo "<table width='100%' style='text-align: center;'>";
-                echo "<tr>";
-                echo "<th>Device Name</th>";
-                echo "<th>Activity</th>";
-                echo "<th>Log</th>";
-                echo "<th>Log Date</th>";
-                echo "</tr>";
-                while ($products = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $products["devicename"] . "</td>";
-                    echo "<td>" . $products["activity"] . "</td>";
-                    echo "<td>" . $products["log"] . "</td>";
-                    echo "<td>" . $products["logdate"] . "</td>";
-                    echo "</tr>";
-                    echo "<tr><td colspan='4'><hr></td></tr>";
-                }
-                echo "</table>";
+                echo "<div style='text-align: center; background-color: rgba(0, 0, 0, 0.37); padding: 20px;'>";
+                echo "<h1 style='color: #009688;'>BG SpanRC</h1>";
+                echo "<p style='font-size: 18px;'><b>BG SpanRC</b> - A powerful table processor with formulas and functions.</p>";
+                echo "</div>";
             } else {
-                echo "<br><br><p><b>BG SpanRC</b> - A powerful table processor with formulas and functions.</p>";
-                echo "<p><b>SpanRC has not been activated yet.</b></p>";
+                echo "<div style='text-align: center; background-color: rgba(0, 0, 0, 0.37); padding: 20px;'>";
+                echo "<h1 style='color: #FF5722;'>Activate BG SpanRC Now!</h1>";
+                echo "<p style='font-size: 18px;'><b>BG SpanRC</b> - A powerful table processor with formulas and functions.</p>";
+                echo "</div>";
             }
         } else {
             echo "<div style='background-color:#3F3F3F; opacity:0.93; box-shadow:0 0 25px black; padding: 2% 3% 2% 3%; border-radius: 2rem;'><h1>Welcome!</h1><br>";

@@ -323,12 +323,9 @@ h1.admin-header {
 .profile-item {
   color: #ebeaea;
   user-select: none;
-  background-color: rgba(0, 0, 0, 0.253);
   font-weight: bold;
   padding: 0.6% 0.6%;
   cursor: pointer;
-  max-width: auto;
-  font-size: 2rem;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
   border-top-left-radius: 1rem;

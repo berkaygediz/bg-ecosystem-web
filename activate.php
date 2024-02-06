@@ -64,7 +64,7 @@
     <header>
         <div class="navbar-icon">
             <a href="index.php" style="text-decoration: none; display: flex; align-items: center;">
-                <img src="img/bg_favicon.png">
+                <img src="img/core/bg_favicon.png">
                 <h1>Ecosystem</h1>
             </a>
         </div>
@@ -161,6 +161,33 @@
                             $log = "SpanRC Activated";
                             mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product, $activity, $log);
                             mysqli_stmt_execute($logquery);
+                            header("location: activate.php");
+                        }
+                    } else if ($activateType == "productkey") {
+                        $productkey = $_POST["productkey"];
+                        $productkeyQuery = mysqli_prepare($checkdb, "SELECT * FROM productkeys WHERE productkey = ?");
+                        mysqli_stmt_bind_param($productkeyQuery, "s", $productkey);
+                        mysqli_stmt_execute($productkeyQuery);
+                        $result = mysqli_stmt_get_result($productkeyQuery);
+                        $product = mysqli_fetch_assoc($result);
+
+                        if (mysqli_num_rows($result) > 0) {
+                            if ($product["status"] == 0) {
+                                $activateQuery = mysqli_prepare($checkdb, "UPDATE productkeys SET status = 1, email = ? WHERE productkey = ?");
+                                mysqli_stmt_bind_param($activateQuery, "ss", $useremail, $productkey);
+                                mysqli_stmt_execute($activateQuery);
+
+                                $logquery = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
+                                $log = "Product Key Activated";
+                                mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product["product"], $activity, $log);
+                                mysqli_stmt_execute($logquery);
+                                header("location: activate.php");
+                            } else {
+                                $_SESSION["error_message"] = "Product key already used.";
+                                header("location: activate.php");
+                            }
+                        } else {
+                            $_SESSION["error_message"] = "Product key not found.";
                             header("location: activate.php");
                         }
                     }
@@ -281,6 +308,16 @@
                 </div>";
                 }
                 echo "</div>";
+                echo "<div style='text-align: center; margin: 2% 0 1% 0; background-color: rgba(0, 0, 0, 0.37); border-radius: 1rem; padding: 1% 0 1% 0;'><b>Activate with Product Key</b>";
+                if (isset($_SESSION["error_message"])) {
+                    echo "<div style='color: red; text-align: center; margin-top: 1%;'>" . $_SESSION["error_message"] . "</div>";
+                    unset($_SESSION["error_message"]);
+                }
+                echo "<form action='activate.php?activate=productkey' method='post' style='text-align: center; margin-top: 1%'>
+                <input type='text' name='productkey' placeholder='AAAA-BBBB-CCCC-DDDD'>
+                <button type='submit' class='btn btn-success'>Activate</button>
+                </form></div>";
+
             } else {
                 echo "<h1 class='form-header'>No products found for the user.</h1>";
             }

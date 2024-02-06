@@ -4,7 +4,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
     echo "<a href='index.php' class='nav-element'>Home</a>";
     echo "<a href='my-products.php' class='nav-element'>My Products</a>";
     echo "<a href='activate.php' class='nav-element'>Activate Product</a>";
-    echo "<img><a class='nav-element'href='profile.php?userid=" . $_SESSION["userid"] . "'>Profile</a></img>";
+    echo "<a class='nav-element' href='profile.php?userid=" . $_SESSION["userid"] . "'>Profile</a>";
     echo "<a href='logout.php' class='nav-element'>Logout</a>";
     echo "</div>";
 } else {

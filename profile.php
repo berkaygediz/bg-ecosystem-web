@@ -33,7 +33,7 @@
     <header>
         <div class="navbar-icon">
             <a href="index.php" style="text-decoration: none; display: flex; align-items: center;">
-                <img src="img/bg_favicon.png">
+            <img src="img/core/bg_favicon.png">
                 <h1>Ecosystem</h1>
             </a>
         </div>
@@ -55,8 +55,7 @@
 
                     if (mysqli_num_rows($result) > 0) {
                         $profileData = mysqli_fetch_assoc($result);
-                        echo "<div style='padding-top: 2%;'>" . $profileData["nametag"] . "</div>";
-                        echo "<div style='padding-top: 2%;'>" . $profileData["email"] . "</div>";
+                        echo "<div><img src='img/core/account.svg' style='width: 5%; height: 5%; border-radius: 50%;'><div>" . $profileData["nametag"] . "</div></div>";
                         echo "<div style='padding-top: 2%;'>" . $profileData["creationtime"] . "</div>";
                     } else {
                         echo "profile not found.";
@@ -69,82 +68,28 @@
             <div id="contact" style="clear:both; padding-top:2%;position:relative; float: left; color: white;"></div>
             <div class="profile-item">
                 <div class="context">
-                    <h1>Products</h1>
+                    <h1>Info</h1>
                     <?php
                     if (isset($_GET["userid"])) {
                         $userid = $_GET["userid"];
-                        $useremail = $_SESSION["email"];
-                        $productsQuery = mysqli_prepare($checkdb, "SELECT richspan, spanrc FROM apps WHERE email = ?");
-                        mysqli_stmt_bind_param($productsQuery, "s", $useremail);
-                        mysqli_stmt_execute($productsQuery);
-                        $result = mysqli_stmt_get_result($productsQuery);
-                        $products = mysqli_fetch_assoc($result);
+                        $profileQuery = mysqli_prepare($checkdb, "SELECT * FROM profile WHERE id = ?");
+                        mysqli_stmt_bind_param($profileQuery, "s", $userid);
+                        mysqli_stmt_execute($profileQuery);
+                        $result = mysqli_stmt_get_result($profileQuery);
 
-                        if ($products["richspan"] == 1) {
-                            $productQuery = mysqli_prepare($checkdb, "SELECT * FROM apps WHERE email = ?");
-                            mysqli_stmt_bind_param($productQuery, "i", $useremail);
-                            mysqli_stmt_execute($productQuery);
-                            $result = mysqli_stmt_get_result($productQuery);
-                            if (mysqli_num_rows($result) > 0) {
-                                echo "<div><b>RichSpan</b></div>";
-                                echo "<div style='background-color: limegreen; color: white; padding: 1%; border-radius: 1rem; margin-top: 1%;'>Activated</div><br>";
-                            }
+                        if (mysqli_num_rows($result) > 0) {
+                            echo "<a href='profile-edit.php' style='text-align:right;'><div style='background-color: rgba(0, 0, 0, 0.37); border-radius:1rem;'><img src='img/core/edit.svg' style='width: 1.5%; height: 1.5%; border-radius: 50%;'>Edit</a></div>";
+                            $profileData = mysqli_fetch_assoc($result);
+                            echo "<div><b>Email:</b><a href='mailto:" . $profileData["email"] . "'> " . $profileData["email"] . "</a></div>";
                         } else {
-                            echo "<div><b>RichSpan</b></div>";
-                            echo "<div style='background-color: red; color: white; padding: 1%; border-radius: 1rem; margin-top: 1%;'>Not Activated</div><br>";
-                        }
-                        if ($products["spanrc"] == 1) {
-                            $productQuery = mysqli_prepare($checkdb, "SELECT * FROM apps WHERE email = ?");
-                            mysqli_stmt_bind_param($productQuery, "i", $useremail);
-                            mysqli_stmt_execute($productQuery);
-                            $result = mysqli_stmt_get_result($productQuery);
-                            if (mysqli_num_rows($result) > 0) {
-                                echo "<div><b>SpanRC</b></div>";
-                                echo "<div style='background-color: limegreen; color: white; padding: 1%; border-radius: 1rem; margin-top: 1%;'>Activated</div>";
-                            }
-                        } else {
-                            echo "<div><b>SpanRC</b></div>";
-                            echo "<div style='background-color: red; color: white; padding: 1%; border-radius: 1rem; margin-top: 1%;'>Not Activated</div>";
+                            echo "profile not found.";
                         }
 
+                    } else {
+                        echo "profile not found.";
                     }
                     ?>
                 </div>
-            </div>
-            <div class="context" style="margin-top: 2%;">
-                <h1>Orders</h1>
-                <?php
-                if (isset($_GET["userid"])) {
-                    $userid = $_GET["userid"];
-                    $useremail = $_SESSION["email"];
-                    $ordersQuery = mysqli_prepare($checkdb, "SELECT * FROM orders WHERE email = ? ORDER BY paymenttime DESC");
-                    mysqli_stmt_bind_param($ordersQuery, "s", $useremail);
-                    mysqli_stmt_execute($ordersQuery);
-                    $result = mysqli_stmt_get_result($ordersQuery);
-
-                    if (mysqli_num_rows($result) > 0) {
-                        echo "<table style='width:100%; border-collapse: collapse;'>";
-                        echo "<tr style='border-bottom: 1px solid #ccc;'>";
-                        echo "<th style='padding: 10px;'>Product</th>";
-                        echo "<th style='padding: 10px;'>Payment Amount</th>";
-                        echo "<th style='padding: 10px;'>Payment Time</th>";
-                        echo "<th style='padding: 10px;'>Payment Status</th>";
-                        echo "</tr>";
-
-                        while ($order = mysqli_fetch_assoc($result)) {
-                            echo "<tr style='color: white;'>";
-                            echo "<td style='border-bottom: 1px solid #ccc; padding: 10px;'>" . $order["product"] . "</td>";
-                            echo "<td style='border-bottom: 1px solid #ccc; padding: 10px;'>" . $order["paymentamount"] . "</td>";
-                            echo "<td style='border-bottom: 1px solid #ccc; padding: 10px;'>" . $order["paymenttime"] . "</td>";
-                            echo "<td style='border-bottom: 1px solid #ccc; padding: 10px;'>" . $order["paymentstatus"] . "</td>";
-                            echo "</tr>";
-                        }
-                        echo "</table>";
-                    } else {
-                        echo "No orders found.";
-                    }
-                }
-                ?>
             </div>
         </div>
         <?php
@@ -172,7 +117,6 @@
             }
         }
         ?>
-
         <?php
         if (isset($_GET["userid"]) && !(isset($_GET["deleteaccount"]))) {
             if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
