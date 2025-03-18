@@ -14,7 +14,7 @@
     <header>
         <div class="navbar-icon">
             <a href="index.php" style="text-decoration: none; display: flex; align-items: center;">
-            <img src="img/core/bg_favicon.png">
+                <img src="img/core/bg_favicon.png">
                 <h1>Ecosystem</h1>
             </a>
         </div>
@@ -70,10 +70,10 @@
 
             if ($resulttag->num_rows == 0 && $resultemail->num_rows == 0) {
                 $insertprofile = mysqli_prepare($checkdb, "INSERT INTO profile (nametag, email, password) VALUES (?, ?, ?)");
-                $insertapps = mysqli_prepare($checkdb, "INSERT INTO apps (email, richspan, spanrc) VALUES (?, ?, ?)");
+                $insertapps = mysqli_prepare($checkdb, "INSERT INTO apps (email, solidwriting, solidsheets) VALUES (?, ?, ?)");
                 $insertlog = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
-                $insertusersettings_rs = mysqli_prepare($checkdb, "INSERT INTO user_settings (email, product, theme, language) VALUES (?, 'RichSpan', ?, ?)");
-                $insertusersettings_sr = mysqli_prepare($checkdb, "INSERT INTO user_settings (email, product, theme, language) VALUES (?, 'SpanRC', ?, ?)");
+                $insertusersettings_rs = mysqli_prepare($checkdb, "INSERT INTO user_settings (email, product, theme, language) VALUES (?, 'SolidWriting', ?, ?)");
+                $insertusersettings_sr = mysqli_prepare($checkdb, "INSERT INTO user_settings (email, product, theme, language) VALUES (?, 'SolidSheets', ?, ?)");
 
                 $nametag_check = $nametag_check_db;
                 $email_check = $email_check_db;
@@ -82,13 +82,13 @@
                 $product = "BG Ecosystem";
                 $activity = "Register";
                 $log = "Register Success";
-                $richspan = 0;
-                $spanrc = 0;
+                $solidwriting = 0;
+                $solidsheets = 0;
                 $theme = "light";
                 $language = "English";
 
                 mysqli_stmt_bind_param($insertprofile, "sss", $nametag_check, $email_check_db, $password_hash);
-                mysqli_stmt_bind_param($insertapps, "sii", $email_check_db, $richspan, $spanrc);
+                mysqli_stmt_bind_param($insertapps, "sii", $email_check_db, $solidwriting, $solidsheets);
                 mysqli_stmt_bind_param($insertlog, "sssss", $email_check_db, $devicename, $product, $activity, $log);
                 mysqli_stmt_bind_param($insertusersettings_rs, "sss", $email_check_db, $theme, $language);
                 mysqli_stmt_bind_param($insertusersettings_sr, "sss", $email_check_db, $theme, $language);

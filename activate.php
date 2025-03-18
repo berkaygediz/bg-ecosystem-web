@@ -14,50 +14,50 @@
     <link rel="icon" type="image/x-icon" href="img/bg_favicon.png">
     <link rel="stylesheet" href="css/style.css">
     <style>
-    .product-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
+        .product-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-    .product-card {
-        width: 300px;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-    }
+        .product-card {
+            width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
 
-    .product-card h2 {
-        margin-bottom: 10px;
-    }
+        .product-card h2 {
+            margin-bottom: 10px;
+        }
 
-    .product-card p {
-        margin-bottom: 15px;
-    }
+        .product-card p {
+            margin-bottom: 15px;
+        }
 
-    .product-card button {
-        width: 100%;
-        padding: 8px 0;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-    }
+        .product-card button {
+            width: 100%;
+            padding: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-    .btn-success {
-        background-color: #28a745;
-        color: #fff;
-    }
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: #fff;
-    }
-</style>
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
@@ -89,76 +89,76 @@
                 $products = mysqli_fetch_assoc($result);
 
                 if (mysqli_num_rows($result) > 0) {
-                    if ($activateType == "richspan") {
-                        if ($products["richspan"] == 1) {
-                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET richspan = 0 WHERE email = ?");
+                    if ($activateType == "solidwriting") {
+                        if ($products["solidwriting"] == 1) {
+                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET solidwriting = 0 WHERE email = ?");
                             mysqli_stmt_bind_param($activateQuery, "s", $useremail);
                             mysqli_stmt_execute($activateQuery);
 
                             $orderQuery = mysqli_prepare($checkdb, "UPDATE orders SET paymentstatus = ? WHERE email = ? AND product = ?");
                             $paymentstatus = "Refunded";
-                            $product = "RichSpan";
+                            $product = "SolidWriting";
                             mysqli_stmt_bind_param($orderQuery, "sss", $paymentstatus, $useremail, $product);
                             mysqli_stmt_execute($orderQuery);
 
                             $logquery = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
-                            $log = "RichSpan Deactivated";
+                            $log = "SolidWriting Deactivated";
                             mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product, $activity, $log);
 
                             mysqli_stmt_execute($logquery);
 
                             header("location: activate.php");
                         } else {
-                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET richspan = 1 WHERE email = ?");
+                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET solidwriting = 1 WHERE email = ?");
                             mysqli_stmt_bind_param($activateQuery, "s", $useremail);
                             mysqli_stmt_execute($activateQuery);
 
                             $orderQuery = mysqli_prepare($checkdb, "INSERT INTO orders (email, paymentamount, paymentstatus, product) VALUES (?, ?, ?, ?)");
                             $paymentamount = 19.99;
                             $paymentstatus = "Completed";
-                            $product = "RichSpan";
+                            $product = "SolidWriting";
                             mysqli_stmt_bind_param($orderQuery, "sdss", $useremail, $paymentamount, $paymentstatus, $product);
                             mysqli_stmt_execute($orderQuery);
 
                             $logquery = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
-                            $log = "RichSpan Activated";
+                            $log = "SolidWriting Activated";
                             mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product, $activity, $log);
                             mysqli_stmt_execute($logquery);
 
                             header("location: activate.php");
                         }
-                    } else if ($activateType == "spanrc") {
-                        if ($products["spanrc"] == 1) {
-                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET spanrc = 0 WHERE email = ?");
+                    } else if ($activateType == "solidsheets") {
+                        if ($products["solidsheets"] == 1) {
+                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET solidsheets = 0 WHERE email = ?");
                             mysqli_stmt_bind_param($activateQuery, "s", $useremail);
                             mysqli_stmt_execute($activateQuery);
 
                             $orderQuery = mysqli_prepare($checkdb, "UPDATE orders SET paymentstatus = ? WHERE email = ? AND product = ?");
                             $paymentstatus = "Refunded";
-                            $product = "SpanRC";
+                            $product = "SolidSheets";
                             mysqli_stmt_bind_param($orderQuery, "sss", $paymentstatus, $useremail, $product);
                             mysqli_stmt_execute($orderQuery);
 
                             $logquery = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
-                            $log = "SpanRC Refunded";
+                            $log = "SolidSheets Refunded";
                             mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product, $activity, $log);
                             mysqli_stmt_execute($logquery);
 
                             header("location: activate.php");
                         } else {
-                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET spanrc = 1 WHERE email = ?");
+                            $activateQuery = mysqli_prepare($checkdb, "UPDATE apps SET solidsheets = 1 WHERE email = ?");
                             mysqli_stmt_bind_param($activateQuery, "s", $useremail);
                             mysqli_stmt_execute($activateQuery);
 
                             $orderQuery = mysqli_prepare($checkdb, "INSERT INTO orders (email, paymentamount, paymentstatus, product) VALUES (?, ?, ?, ?)");
                             $paymentamount = 19.99;
                             $paymentstatus = "Completed";
-                            $product = "SpanRC";
+                            $product = "SolidSheets";
                             mysqli_stmt_bind_param($orderQuery, "sdss", $useremail, $paymentamount, $paymentstatus, $product);
                             mysqli_stmt_execute($orderQuery);
 
                             $logquery = mysqli_prepare($checkdb, "INSERT INTO log (email, devicename, product, activity, log) VALUES (?, ?, ?, ?, ?)");
-                            $log = "SpanRC Activated";
+                            $log = "SolidSheets Activated";
                             mysqli_stmt_bind_param($logquery, "sssss", $useremail, $devicename, $product, $activity, $log);
                             mysqli_stmt_execute($logquery);
                             header("location: activate.php");
@@ -210,10 +210,10 @@
             if (mysqli_num_rows($result) > 0) {
                 echo "<center><h1 class='form-header'>Activate Products</h1></center>";
                 echo "<div class='product-container'>";
-                if ($products["richspan"] == 1) {
+                if ($products["solidwriting"] == 1) {
                     echo "<div class='product-card bg-dark'>
-                    <img src='img/richspan.png' style='width: 100%;'>
-                    <h2 style='font-weight: bold; margin-top: 10px;'>RichSpan</h2>
+                    <img src='img/solidwriting.png' style='width: 100%;'>
+                    <h2 style='font-weight: bold; margin-top: 10px;'>SolidWriting</h2>
                     <p>Rich word processor application.</p>
                     <b>Features available:</b>
                     <ul>
@@ -232,16 +232,16 @@
                     <div>
                     <h2 style='color: green;'>Active</h2></div>
                     Download available
-                    <a href='products/SpanRC.zip' ><button class='btn btn-success'>Download</button></a>
+                    <a href='products/SolidSheets.zip' ><button class='btn btn-success'>Download</button></a>
                     <br><br>
-                    <form action='activate.php?activate=richspan' method='post'>
+                    <form action='activate.php?activate=solidwriting' method='post'>
                         <button type='submit' class='btn btn-warning'>Refund</button>
                     </form>
                 </div>";
                 } else {
                     echo "<div class='product-card bg-dark'>
-                    <img src='img/richspan.png' style='width: 100%;'>
-                    <h2 style='font-weight: bold; margin-top: 10px;'>RichSpan</h2>
+                    <img src='img/solidwriting.png' style='width: 100%;'>
+                    <h2 style='font-weight: bold; margin-top: 10px;'>SolidWriting</h2>
                     <p>Rich word processor application.</p>
                     <b>Features include:</b>
                     <ul>
@@ -258,15 +258,15 @@
                         and more...
                     </ul>
                     <p><b>Price:</b> 20 TL</p>
-                    <form action='activate.php?activate=richspan' method='post'>
+                    <form action='activate.php?activate=solidwriting' method='post'>
                         <button type='submit' class='btn btn-success'>Buy Now</button>
                     </form>
                 </div>";
                 }
-                if ($products["spanrc"] == 1) {
+                if ($products["solidsheets"] == 1) {
                     echo "<div class='product-card bg-dark'>
-                <img src='img/spanrc.png' style='width: 100%;'>
-                <h2 style='font-weight: bold; margin-top: 10px;'>SpanRC</h2>
+                <img src='img/solidsheets.png' style='width: 100%;'>
+                <h2 style='font-weight: bold; margin-top: 10px;'>SolidSheets</h2>
                 <p>Table processor application.</p>
                 <b>Features available:</b>
                 <ul>
@@ -280,16 +280,16 @@
                 </ul>
                 <div><h2 style='color: green;'>Active</h2></div>
                 Download available
-                <a href='products/SpanRC.zip' ><button class='btn btn-success'>Download</button></a>
+                <a href='products/SolidSheets.zip' ><button class='btn btn-success'>Download</button></a>
                 <br><br>
-                <form action='activate.php?activate=spanrc' method='post'>
+                <form action='activate.php?activate=solidsheets' method='post'>
                     <button type='submit' class='btn btn-warning'>Refund</button>
                 </form>
                 </div>";
                 } else {
                     echo "<div class='product-card bg-dark'>
-                <img src='img/spanrc.png' style='width: 100%;'>
-                <h2 style='font-weight: bold; margin-top: 10px;'>SpanRC</h2>
+                <img src='img/solidsheets.png' style='width: 100%;'>
+                <h2 style='font-weight: bold; margin-top: 10px;'>SolidSheets</h2>
                 <p>Table processor application.</p>
                 <b>Features include:</b>
                 <ul>
@@ -302,7 +302,7 @@
                     and more...
                 </ul>
                 <p><b>Price:</b> 20 TL</p>
-                <form action='activate.php?activate=spanrc' method='post'>
+                <form action='activate.php?activate=solidsheets' method='post'>
                     <button type='submit' class='btn btn-success'>Buy Now</button>
                 </form>
                 </div>";

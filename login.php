@@ -18,7 +18,7 @@
     <header>
         <div class="navbar-icon">
             <a href="index.php" style="text-decoration: none; display: flex; align-items: center;">
-            <img src="img/core/bg_favicon.png">
+                <img src="img/core/bg_favicon.png">
                 <h1>Ecosystem</h1>
             </a>
         </div>
@@ -78,7 +78,7 @@
         <form class="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST"
             enctype="multipart/form-data">
             <h1 class="form-header">Log In</h1>
-            
+
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" required>
             <label for="password">Password:</label>

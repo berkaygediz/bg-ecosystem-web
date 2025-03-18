@@ -31,8 +31,8 @@ DROP TABLE IF EXISTS `apps`;
 CREATE TABLE IF NOT EXISTS `apps` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(80) NOT NULL,
-  `richspan` int NOT NULL,
-  `spanrc` int NOT NULL DEFAULT '0',
+  `solidwriting` int NOT NULL,
+  `solidsheets` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `apps` (
 -- Tablo döküm verisi `apps`
 --
 
-INSERT INTO `apps` (`id`, `email`, `richspan`, `spanrc`) VALUES
+INSERT INTO `apps` (`id`, `email`, `solidwriting`, `solidsheets`) VALUES
 (31, 'xoxoxo@xoxo.com', 1, 1);
 
 -- --------------------------------------------------------
@@ -125,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `user_settings` (
 --
 
 INSERT INTO `user_settings` (`id`, `email`, `product`, `theme`, `language`) VALUES
-(8, 'xoxoxo@xoxo.com', 'RichSpan', 'dark', 'English'),
-(9, 'xoxoxo@xoxo.com', 'SpanRC', 'light', 'English');
+(8, 'xoxoxo@xoxo.com', 'SolidWriting', 'dark', 'English'),
+(9, 'xoxoxo@xoxo.com', 'SolidSheets', 'light', 'English');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
